@@ -8,8 +8,8 @@ class CheckoutController {
     Checkout = async (req, res) => {
         const result = await checkoutModel.create({ body: req.body, user_id: req.params.id });
 
-        if (result !== 2) {
-            throw new Error('Something went wrong');
+        if (result[0] === 5) {
+            return res.status(400).send(result[1]);
         }
         res.status(201).send('User checked out');
     }

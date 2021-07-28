@@ -1,13 +1,15 @@
 const query = require('../config')
 const { multipleColumnSet } = require('../Helpers/common.utils')
 const cart = require('../Models/cart')
+const {RegisterValidation: registerValidation} = require("../Helpers/validation");
+const checkoutValidation = require('../Helpers/validation').CheckoutValidation
 
 class Checkout {
     create = async (params) => {
         //VALIDATE INPUT
-        // TODO : make checkout validation
+        const { error } = await checkoutValidation(params.body);
+        if (error) return [ 5, error.details[0].message ];
 
-        console.log(params);
         const { keys, values } = multipleColumnSet(params.body)
 
         const cost_sql = `SELECT total_cost FROM cart WHERE id=${params.user_id}`;
@@ -32,7 +34,6 @@ class Checkout {
 
         const getCart = await cart.getAll();
         getCart.products.map(async element => {
-            console.log(element.id);
             await query(add_to_order_history, [order_history.insertId, element.id]);
         })
 
