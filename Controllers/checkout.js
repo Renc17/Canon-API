@@ -1,8 +1,13 @@
 const checkoutModel = require('../Models/checkout')
 
 class CheckoutController {
-    GetOrders = async (req, res) => {
+    GetOrdersHistory = async (req, res) => {
+        const result = await checkoutModel.getOrders({ user_id: req.params.id });
 
+        if (!result) {
+            return res.status(400).send(result);
+        }
+        res.status(201).send('User checked out');
     }
 
     Checkout = async (req, res) => {

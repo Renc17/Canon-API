@@ -1,19 +1,20 @@
 const express = require('express')
 const cartController = require('../Controllers/cart')
+const verify = require('../Helpers/verifyToken')
 
 const router = express.Router()
 
 // ROUTES
 router.route('/')
-    .get(cartController.GetProducts)
-    .post(cartController.Add)
+    .get(verify, cartController.GetProducts)
+    .post(verify, cartController.Add)
 
 
 router.route('/:id')
-    .get(cartController.GetById)
-    .delete(cartController.EmptyCart)
+    .get(verify, cartController.GetById)
+    .delete(verify, cartController.EmptyCart)
 
 router.route('/product/:id')
-    .delete(cartController.DeleteById)
+    .delete(verify, cartController.DeleteById)
 
 module.exports = router;
