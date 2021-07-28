@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS canon;
+USE canon;
+
+CREATE TABLE IF NOT EXISTS cart (
+    id int,
+    PRIMARY KEY(id),
+    FOREIGN KEY (id) REFERENCES users (id) ON DELETE CASCADE,
+    total_cost INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
