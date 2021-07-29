@@ -1,6 +1,7 @@
 const query = require('../config')
 const { multipleColumnSet } = require('../Helpers/common.utils')
 const cart = require('../Models/cart')
+const fs = require("fs");
 const checkoutValidation = require('../Helpers/validation').CheckoutValidation
 
 class Checkout {
@@ -62,11 +63,18 @@ class Checkout {
 
             const product_list = [];
             for (const order of orders) {
-                const product = await query(get_checkout_products_sql, [order.product_id]);
+                const product_ret = await query(get_checkout_products_sql, [order.product_id]);
+                console.log(product_ret)
+                const product = {
+                    id: product_ret[0].id,
+                    title: product_ret[0].title,
+                    description: product_ret[0].description,
+                    price: product_ret[0].price,
+                    image: fs.readFileSync(product_ret[0].image, 'base64')
+                }
                 product_list.push(product);
             }
 
-            console.log("product_list" ,product_list[0]);
             const details = {
                 address: address[0],
                 order: product_list
