@@ -31,7 +31,6 @@ class ProductController {
             throw new Error('Something went wrong 500');
         }
 
-        console.log(result)
         const product = {
             id: result[0].id,
             title: result[0].title,

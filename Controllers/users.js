@@ -36,8 +36,7 @@ class UserController {
         if (result[0] === -1) {
             return res.status(400).send(result[1]);
         }
-
-        res.header('auth-token', result).send(result);
+        res.json({token: result});
     }
 
     DeleteById = async (req, res) => {

@@ -24,7 +24,7 @@ class UserModel {
         if (!passwordValidation) return [ -1, "invalid password" ];
 
         //GET JWT
-        return jwt.sign({ id: user[0].id } , process.env.SECRET_TOKEN);
+        return jwt.sign({ id: user[0].id } , process.env.SECRET_TOKEN, {expiresIn: '1h'});
     }
 
     register = async (params) => {

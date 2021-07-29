@@ -42,7 +42,6 @@ class Checkout {
     }
 
     getOrders = async (params) => {
-        // TODO : Fix Get Orders
         const get_order_history_sql = `SELECT * FROM order_history WHERE user_id=${params.user_id}`;
         const history = await query(get_order_history_sql);
 
@@ -50,25 +49,33 @@ class Checkout {
         const get_checkout_order_sql = `SELECT * FROM orders WHERE  order_history_id=?`;
         const get_checkout_products_sql = `SELECT * FROM products WHERE  id=?`;
 
-        let result = [];
+        const checkout_ids = [];
 
-        history.map(async checkout => {
-            const details = await query(get_checkout_sql, [checkout.checkout_id]);
-            console.log('Checkout details ', details[0]);
-            const body = {
-                checkout: details[0].city,
-                //products: []
-            };
-            /*const orders = await query(get_checkout_order_sql, [checkout.checkout_id]);
-            orders.map(async order => {
-                const product = await query(get_checkout_products_sql, [order.product_id]);
-                //console.log('Checkout product ', product);
-                body.products.push(product);
-            })*/
-            result.push("details");
+        history.map(checkout => {
+            checkout_ids.push(checkout.checkout_id);
         })
 
-        console.log(result);
+        const checkout_address = [];
+        for (const id of checkout_ids) {
+            const address = await query(get_checkout_sql, [id]);
+            const orders = await query(get_checkout_order_sql, [id]);
+
+            const product_list = [];
+            for (const order of orders) {
+                const product = await query(get_checkout_products_sql, [order.product_id]);
+                product_list.push(product);
+            }
+
+            console.log("product_list" ,product_list[0]);
+            const details = {
+                address: address[0],
+                order: product_list
+            }
+            checkout_address.push(details);
+        }
+
+
+        return checkout_address;
     }
 }
 
