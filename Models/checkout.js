@@ -12,32 +12,33 @@ class Checkout {
 
         const { keys, values } = multipleColumnSet(params.body)
 
-        const cost_sql = `SELECT total_cost FROM cart WHERE id=${params.user_id}`;
+        const cost_sql = `SELECT total_cost FROM cart WHERE id=${params.user.id}`;
         const cost = await query(cost_sql);
 
         const sql = `INSERT INTO checkout
         (user_id,total_cost,${keys.toString()}) VALUES (?,?,?,?,?,?,?,?,?,?)`;
 
         const input = [];
-        input.push(params.user_id);
+        input.push(params.user.id);
         input.push(cost[0].total_cost);
         values.forEach(element => input.push(element))
 
         const result = await query(sql, input);
 
-        const order_history_swl = `INSERT INTO order_history
+        const order_history_sql = `INSERT INTO order_history
         (user_id,checkout_id) VALUES (?,?)`;
-        const order_history = await query(order_history_swl, [params.user_id, result.insertId]);
+
+        const order_history = await query(order_history_sql, [params.user.id, result.insertId]);
 
         const add_to_order_history = `INSERT INTO orders
         (order_history_id, product_id) VALUES (?,?)`;
 
-        const getCart = await cart.getAll();
+        const getCart = await cart.getAll(params);
         getCart.products.map(async element => {
             await query(add_to_order_history, [order_history.insertId, element.id]);
         })
 
-        await cart.deleteAllProducts({cart_id: params.user_id})
+        await cart.deleteAllProducts({cart_id: params.user.id})
 
         return result.serverStatus;
     }
@@ -64,7 +65,6 @@ class Checkout {
             const product_list = [];
             for (const order of orders) {
                 const product_ret = await query(get_checkout_products_sql, [order.product_id]);
-                console.log(product_ret)
                 const product = {
                     id: product_ret[0].id,
                     title: product_ret[0].title,

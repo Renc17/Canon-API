@@ -2,16 +2,7 @@ const cartModel = require('../Models/cart');
 
 class CartController {
     GetProducts = async (req, res) => {
-        const result = await cartModel.getAll();
-
-        if (!result) {
-            throw new Error('Something went wrong 500');
-        }
-        res.status(201).send(result);
-    }
-
-    GetById = async (req, res) => {
-        const result = await cartModel.findOne({ id: req.params.id });
+        const result = await cartModel.getAll(req);
 
         if (!result) {
             throw new Error('Something went wrong 500');
@@ -20,7 +11,7 @@ class CartController {
     }
 
     Add = async (req, res) => {
-        const result = await cartModel.addProduct(req.body);
+        const result = await cartModel.addProduct(req);
 
         if (!result) {
             throw new Error('Something went wrong 500');
@@ -29,7 +20,7 @@ class CartController {
     }
 
     DeleteById = async (req, res) => {
-        const result = await cartModel.deleteOneProduct({ id: req.params.id });
+        const result = await cartModel.deleteOneProduct(req);
 
         if (!result) {
             throw new Error('Something went wrong 500');
@@ -38,7 +29,7 @@ class CartController {
     }
 
     EmptyCart = async (req, res) => {
-        const result = await cartModel.deleteAllProducts({ id: req.params.id });
+        const result = await cartModel.deleteAllProducts({ cart_id: req.user.id });
 
         if (!result) {
             return res.status(201).send('No products to delete')

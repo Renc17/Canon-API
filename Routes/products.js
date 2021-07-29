@@ -1,6 +1,7 @@
 const express = require('express')
 const productController = require('../Controllers/product')
 const multer  = require('multer')
+const verify = require('../Helpers/verifyToken')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -22,7 +23,7 @@ router.route('/')
 
 router.route('/:id')
     .get(productController.GetById)
-    .patch(productController.UpdateById)
-    .delete(productController.DeleteById)
+    .patch(verify, productController.UpdateById)
+    .delete(verify, productController.DeleteById)
 
 module.exports = router;

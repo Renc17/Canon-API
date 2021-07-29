@@ -8,13 +8,9 @@ const router = express.Router()
 router.route('/')
     .get(verify, cartController.GetProducts)
     .post(verify, cartController.Add)
-
-
-router.route('/:id')
-    .get(verify, cartController.GetById)
     .delete(verify, cartController.EmptyCart)
 
-router.route('/product/:id')
+router.route('/:id')
     .delete(verify, cartController.DeleteById)
 
 module.exports = router;

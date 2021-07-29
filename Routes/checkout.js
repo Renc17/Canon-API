@@ -5,7 +5,7 @@ const verify = require('../Helpers/verifyToken')
 const router = express.Router()
 
 // ROUTES
-router.route('/:id')
+router.route('/')
     .get(verify, checkoutController.GetOrdersHistory)
     .post(verify, checkoutController.Checkout)
 

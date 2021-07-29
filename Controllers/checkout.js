@@ -2,7 +2,7 @@ const checkoutModel = require('../Models/checkout')
 
 class CheckoutController {
     GetOrdersHistory = async (req, res) => {
-        const result = await checkoutModel.getOrders({ user_id: req.params.id });
+        const result = await checkoutModel.getOrders({ user_id: req.user.id });
         if (!result) {
             return res.status(400).send(result);
         }
@@ -10,7 +10,7 @@ class CheckoutController {
     }
 
     Checkout = async (req, res) => {
-        const result = await checkoutModel.create({ body: req.body, user_id: req.params.id });
+        const result = await checkoutModel.create(req);
 
         if (result[0] === 5) {
             return res.status(400).send(result[1]);
