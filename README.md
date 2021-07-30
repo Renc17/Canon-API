@@ -25,7 +25,7 @@ GET : localhost:8080/api/v1/cart &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged i
 
 POST : localhost:8080/api/v1/cart &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in user post products in cart
 
-DELETE : localhost:8080/api/v1/cart &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in empty cart
+DELETE : localhost:8080/api/v1/cart &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in user empty cart
 
 DELETE : localhost:8080/api/v1/cart/:id &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in user delete products from cart
 
