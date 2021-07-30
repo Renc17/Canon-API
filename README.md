@@ -49,6 +49,11 @@ PATCH : localhost:8080/api/v1/auth/users/:id &emsp; &emsp; &emsp; &emsp; >>> &em
 
 DELETE : localhost:8080/api/v1/auth/users/:id &emsp; &emsp; &emsp; &emsp; >>> &emsp; delete user with id
 
+### Test User Credentials
+
+email: test@gmail.com
+
+password: 123pass
 
 ## TODO
 Add admin role
