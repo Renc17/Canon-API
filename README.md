@@ -4,10 +4,14 @@ Fake store REST API that you can use whenever you need Pseudo-real data for your
 Theme : canon camera and other related equipment.
 # Resources
 
+Load file : canon.sql
+
+# How To
 ######*for requests that require user to be logged in, add to header auth-token: 'user token'
 
-### Products
-GET : localhost:8080/api/v1/products &emsp; &emsp; &emsp; &emsp;  >>> &emsp; get all products (store/shop)
+## Products
+
+### Get all products (store/shop)
 
 POST : localhost:8080/api/v1/products &emsp; &emsp; &emsp; &emsp; >>> &emsp; create product
 
@@ -20,12 +24,19 @@ PATCH : localhost:8080/api/v1/products/:id &emsp; &emsp; &emsp; &emsp; >>> &emsp
 DELETE : localhost:8080/api/v1/products/:id &emsp; &emsp; &emsp; &emsp; >>> &emsp; delete product with id
 
 
-### Cart
-GET : localhost:8080/api/v1/cart &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in user get products in cart
+## Cart
+
+### logged in user get products in cart
+
+![Screenshot from 2021-07-30 16-34-47](https://user-images.githubusercontent.com/57152951/127660961-9b19108e-ea18-4dba-a758-9446968ca600.png)
+
 
 POST : localhost:8080/api/v1/cart &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in user post products in cart
 
-DELETE : localhost:8080/api/v1/cart &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in user empty cart
+### logged in user empty cart
+
+![Screenshot from 2021-07-30 16-30-03](https://user-images.githubusercontent.com/57152951/127660765-46407400-022d-4862-affa-546dfe8820d8.png)
+
 
 DELETE : localhost:8080/api/v1/cart/:id &emsp; &emsp; &emsp; &emsp; >>> &emsp; logged in user delete products from cart
 
