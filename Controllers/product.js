@@ -6,7 +6,7 @@ class ProductController {
         const result = await productModel.getAll();
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
 
         const products = [];
@@ -28,7 +28,7 @@ class ProductController {
         const result = await productModel.findOne({ id: req.params.id });
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
 
         const product = {
@@ -60,7 +60,7 @@ class ProductController {
         const result = await productModel.deleteOne({ id: req.params.id });
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.status(201).send(result);
     }
@@ -78,7 +78,7 @@ class ProductController {
         const result = await productModel.updateOne({ id: req.params.id, body: req.body });
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.sendStatus(200);
     }

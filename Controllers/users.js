@@ -6,7 +6,7 @@ class UserController {
         const result = await userModel.getAll();
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.status(201).send(result);
     }
@@ -15,7 +15,7 @@ class UserController {
         const result = await userModel.findOne({ id: req.params.id });
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.status(201).send(result);
     }
@@ -43,7 +43,7 @@ class UserController {
         const result = await userModel.deleteOne({ id: req.params.id });
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.status(201).send(result);
     }
@@ -53,7 +53,7 @@ class UserController {
         const result = await userModel.deleteAll();
 
         if (!result) {
-            return res.status(201).send('No products to delete')
+            return res.status(200).send('No products to delete')
         }
         res.sendStatus(200)
     }
@@ -62,7 +62,7 @@ class UserController {
         const result = await userModel.updateOne({ body: req.body, id: req.params.id });
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.sendStatus(200);
     }

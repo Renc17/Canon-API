@@ -5,7 +5,7 @@ class CartController {
         const result = await cartModel.getAll(req);
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.status(201).send(result);
     }
@@ -14,7 +14,7 @@ class CartController {
         const result = await cartModel.addProduct(req);
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.status(201).send('Product was added to cart!');
     }
@@ -23,7 +23,7 @@ class CartController {
         const result = await cartModel.deleteOneProduct(req);
 
         if (!result) {
-            throw new Error('Something went wrong 500');
+            res.sendStatus(500);
         }
         res.status(201).send(result);
     }
