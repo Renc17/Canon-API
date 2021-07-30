@@ -67,8 +67,6 @@ class CartModel {
 
             values.push(params.user.id)
             await query(sql, values);
-
-            quantity = 1;
         }else {
             quantity = existing_item[0].quantity + 1;
             const sql = `UPDATE cart_item SET quantity=${quantity} WHERE product_id=${params.body.product_id}`;
@@ -81,7 +79,7 @@ class CartModel {
         const data = {
             product: {
                 price: product[0].price,
-                quantity: quantity,
+                quantity: 1,
             },
             cart: {
                 id: params.user.id,
@@ -94,31 +92,28 @@ class CartModel {
     }
 
     changeTotalCost = async (params) => {
-        const cost = params.cart.total_cost + params.product.price*params.product.quantity;
-        const sql = `UPDATE cart SET total_cost=${cost} WHERE id=${params.cart.id}`;
+        const total_cost = params.cart.total_cost + params.product.price*params.product.quantity;
+        const sql = `UPDATE cart SET total_cost=${total_cost} WHERE id=${params.cart.id}`;
         return await query(sql);
     }
 
     deleteOneProduct = async (params) => {
         const sql = `DELETE FROM cart_item WHERE product_id=? AND cart_id=?`;
-
-        // TODO : Change total cost on delete
-        // TODO : fix params
         const product = await productModel.findOne({id: params.params.id });
-        /*const cart = await this.findOne({ id: params.cart_id });
+        const product_in_cart = await this.findOneItemInCart({ product_id: params.params.id });
+        const cart = await this.findOneCart({ id: params.user.id });
 
         const data = {
             product: {
-                price: -product[0].price
+                price: -product[0].price,
+                quantity: product_in_cart[0].quantity,
             },
             cart: {
-                id: params.cart_id,
-                quantity: params.quantity,
+                id: params.user.id,
                 total_cost: cart[0].total_cost
             }
         }
-
-        await this.changeTotalCost(data);*/
+        await this.changeTotalCost(data);
         return await query(sql, [params.params.id, params.user.id]);
     }
 
