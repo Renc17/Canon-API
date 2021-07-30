@@ -7,7 +7,7 @@ Theme : canon camera and other related equipment.
 Load file : canon.sql
 
 # How To
-######*for requests that require user to be logged in, add to header auth-token: 'user token'
+###### *for requests that require user to be logged in, add to header auth-token: 'user token'
 
 ## Products
 
