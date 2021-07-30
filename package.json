@@ -4,7 +4,8 @@
   "description": "Faka Canon e-Commerce Store API",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --trace-warnings index.js"
+    "start": "node index.js",
+    "dev": "nodemon --trace-warnings index.js"
   },
   "repository": {
     "type": "git",
