@@ -58,26 +58,30 @@ class CartModel {
 
     addProduct = async (params) => {
 
-        // TODO : update quantity if product is in bucket
-        const item_in_cart = await this.findOneItemInCart({ product_id: params.body.product_id });
-        if (item_in_cart.length){
-            console.log('update quantity');
-            return 1;
+        const existing_item = await this.findOneItemInCart({ product_id: params.body.product_id });
+        let quantity;
+        if (!existing_item.length){
+            const { keys, values } = multipleColumnSet(params.body)
+            const sql = `INSERT INTO cart_item
+            (${keys.toString()},cart_id) VALUES (?,?,?)`;
+
+            values.push(params.user.id)
+            await query(sql, values);
+
+            quantity = 1;
+        }else {
+            quantity = existing_item[0].quantity + 1;
+            const sql = `UPDATE cart_item SET quantity=${quantity} WHERE product_id=${params.body.product_id}`;
+            await query(sql);
         }
-        const { keys, values } = multipleColumnSet(params.body)
-        const sql = `INSERT INTO cart_item
-        (${keys.toString()},cart_id) VALUES (?,?,?)`;
 
-        values.push(params.user.id)
-        const result = await query(sql, values);
-
-        const product = await productModel.findOne({id: params.body.product_id });
         const cart = await this.findOneCart({ id: params.user.id });
+        const product = await productModel.findOne({id: params.body.product_id });
 
         const data = {
             product: {
                 price: product[0].price,
-                quantity: params.body.quantity,
+                quantity: quantity,
             },
             cart: {
                 id: params.user.id,
@@ -85,14 +89,14 @@ class CartModel {
             }
         }
 
-        await this.changeTotalCost(data);
+        const result = await this.changeTotalCost(data);
         return result ? result.affectedRows : 0;
     }
 
     changeTotalCost = async (params) => {
         const cost = params.cart.total_cost + params.product.price*params.product.quantity;
         const sql = `UPDATE cart SET total_cost=${cost} WHERE id=${params.cart.id}`;
-        await query(sql);
+        return await query(sql);
     }
 
     deleteOneProduct = async (params) => {
